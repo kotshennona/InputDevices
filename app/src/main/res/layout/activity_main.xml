@@ -10,7 +10,24 @@
     tools:context="com.example.osipov.inputdevices.MainActivity">
 
     <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text= "@string/app_tvDefaultResultMessage" />
+    <EditText
+        android:id="@+id/etDeviceNumber"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/btnSendQuery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_defaultDeviceNumber"
+        android:inputType="number" />
+    <Button
+        android:id="@+id/btnSendQuery"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="@string/app_btnSendQuery"/>
 </RelativeLayout>
