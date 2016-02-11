@@ -14,14 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text= "@string/app_tvDefaultResultMessage" />
-    <EditText
-        android:id="@+id/etDeviceNumber"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/btnSendQuery"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_defaultDeviceNumber"
-        android:inputType="number" />
     <Button
         android:id="@+id/btnSendQuery"
         android:layout_alignParentBottom="true"
@@ -30,4 +22,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_btnSendQuery"/>
+    <EditText
+        android:id="@+id/etDeviceNumber"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/btnSendQuery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_defaultDeviceNumber"
+        android:inputType="number" />
+
 </RelativeLayout>
