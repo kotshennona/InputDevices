@@ -2,7 +2,6 @@ package com.example.osipov.inputdevices;
 
 import android.net.LocalSocket;
 import android.net.LocalSocketAddress;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +11,7 @@ import java.io.InputStream;
  */
 public class IddqdClient {
 
-    private static final String SOCKET_NAME =  "inputdevinfo_socket";
-    private static final byte MAX_ATTEMPTS_COUNT = 5;
-    private static final String LOG_TAG = "IddqdClient";
+    private static final String SOCKET_NAME = "inputdevinfo_socket";
 
     LocalSocket lSocket;
     LocalSocketAddress serverAddress;
@@ -25,26 +22,14 @@ public class IddqdClient {
         lSocket = new LocalSocket();
     }
 
-    private void connect() {
-
-        byte attemptsCount = 0;
-
-        // Currently results in Permission Denied error
-        while (!lSocket.isConnected() && attemptsCount < MAX_ATTEMPTS_COUNT) {
-            try {
-                lSocket.connect(serverAddress);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            attemptsCount++;
-        }
-        Log.i(LOG_TAG, "Conection attempt no " + Integer.toString(attemptsCount));
+    public void connect() throws IOException {
+        lSocket.connect(serverAddress);
     }
 
-    private void disconnect() {
-         if (!lSocket.isConnected()){
-             return;
-         }
+    public void disconnect() {
+        if (!lSocket.isConnected()) {
+            return;
+        }
 
         try {
             lSocket.close();
@@ -55,14 +40,12 @@ public class IddqdClient {
 
     public String getInputDeviceInfo(int deviceNo) {
         String result;
-        connect();
         // Dummy implementation
         if (lSocket.isConnected()) {
             result = "Device no is " + Integer.toString(deviceNo);
         } else {
             result = "Error. Failed to connect";
         }
-        disconnect();
         return result;
     }
 
