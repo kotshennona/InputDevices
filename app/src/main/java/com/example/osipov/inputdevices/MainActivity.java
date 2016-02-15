@@ -1,12 +1,14 @@
 package com.example.osipov.inputdevices;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         iddqdClient = new IddqdClient();
+        try {
+            iddqdClient.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (savedInstanceState != null) {
             tvResult.setText(savedInstanceState.getString(RESULT));
@@ -47,7 +54,15 @@ public class MainActivity extends AppCompatActivity {
         int argument;
         AsyncTask<Integer, Void, String> aTask = new DeviceInfoQueryAsyncTask();
 
-        // TODO: Extract into a metgod
+        if (!iddqdClient.isConnected()) {
+            try {
+                iddqdClient.connect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // TODO: Extract into a method
         String devNumbers = etDeviceNumber.getText().toString();
         devNumbers = devNumbers.equals("") ? "0" : devNumbers;
         argument = Integer.parseInt(devNumbers);
@@ -81,14 +96,21 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Integer... params) {
             int deviceNumber;
+            String result = "";
 
             if (params.length < 1) {
                 //What about exceptions?
                 return "Error. No arguments provided.";
             }
-
             deviceNumber = params[0];
-            return iddqdClient.getInputDeviceInfo(deviceNumber);
+
+            try {
+                result = iddqdClient.getInputDeviceInfo(deviceNumber);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return result;
         }
 
         @Override
@@ -98,4 +120,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        try {
+            iddqdClient.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
+    }
 }
