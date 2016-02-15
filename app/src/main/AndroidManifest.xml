@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.osipov.inputdevices">
 
-    <uses-permission android:name="com.example.ACCESS_INPUT_DEVICE_INFO"/>
+    <uses-permission android:name="com.example.ACCESS_INPUT_DEVICE_INFO" />
 
     <application
         android:allowBackup="true"
