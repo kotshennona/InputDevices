@@ -45,7 +45,7 @@ public class IddqdClient {
     }
 
     public String getInputDeviceInfo(int deviceNo) throws IOException {
-        String result;
+        String result = "";
         String completeCommand;
         char[] readBuffer;
         readBuffer = new char[READ_BUFFER_SIZE];
@@ -70,8 +70,8 @@ public class IddqdClient {
                 try {
                     Thread.sleep(TIMEOUT_MILLIS);
                 } catch (InterruptedException e) {
-                    //Who did it? I didn't.
-                    ;
+                    //That's probably because of disconnect.
+                    return result;
                 }
             }
 

@@ -3,6 +3,7 @@ package com.example.osipov.inputdevices;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvResult;
     EditText etDeviceNumber;
     Button btnSendQuery;
+    AsyncTask<Integer, Void, String> aTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +52,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void queryDeviceInfo() {
-
         int argument;
-        AsyncTask<Integer, Void, String> aTask = new DeviceInfoQueryAsyncTask();
+        //This approach was chosen for simplicity's sake. Namely to avoid task queue.
+        if (aTask != null && (aTask.getStatus() == AsyncTask.Status.PENDING
+                || aTask.getStatus() == AsyncTask.Status.RUNNING)) {
+            return;
+        }
+
+        aTask = new DeviceInfoQueryAsyncTask();
 
         if (!iddqdClient.isConnected()) {
             try {
@@ -114,6 +121,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        protected void onCancelled(String s) {
+            super.onCancelled(s);
+            tvResult.setText(s);
+        }
+
+        @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             tvResult.setText(s);
@@ -122,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (aTask != null) {
+            aTask.cancel(true);
+        }
+
         try {
             iddqdClient.disconnect();
         } catch (IOException e) {
