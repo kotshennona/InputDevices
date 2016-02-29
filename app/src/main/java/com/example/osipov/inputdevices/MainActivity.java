@@ -3,7 +3,6 @@ package com.example.osipov.inputdevices;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -69,11 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // TODO: Extract into a method
-        String devNumbers = etDeviceNumber.getText().toString();
-        devNumbers = devNumbers.equals("") ? "0" : devNumbers;
-        argument = Integer.parseInt(devNumbers);
-        aTask.execute(argument);
+        aTask.execute(safelyParseInput(etDeviceNumber.getText().toString()));
 
     }
 
@@ -82,10 +77,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putString(RESULT, tvResult.getText().toString());
 
-        String devNumbers = etDeviceNumber.getText().toString();
-        devNumbers = devNumbers.equals("") ? "0" : devNumbers;
-        int devNumber = Integer.parseInt(devNumbers);
-        outState.putInt(DEVICE_NUMBER, devNumber);
+        outState.putInt(DEVICE_NUMBER, safelyParseInput(etDeviceNumber.getText().toString()));
     }
 
     @Override
@@ -145,5 +137,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         super.onDestroy();
+    }
+
+    private int safelyParseInput(String inputNumber) {
+        String devNumbers;
+        devNumbers = inputNumber.equals("") ? "0" : inputNumber;
+        return Integer.parseInt(devNumbers);
     }
 }
