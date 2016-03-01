@@ -50,7 +50,6 @@ public class IddqdClient {
         char[] readBuffer;
         readBuffer = new char[READ_BUFFER_SIZE];
 
-        // Dummy implementation
         if (lSocket.isConnected()) {
             completeCommand = COMMAND_GET_DEVICE_INFO + Integer.toString(deviceNo) + "-\n";
 
