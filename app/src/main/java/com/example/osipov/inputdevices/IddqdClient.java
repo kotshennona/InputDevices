@@ -28,6 +28,10 @@ public class IddqdClient {
         lSocket = new LocalSocket();
     }
 
+    public IddqdClient(LocalSocket localSocket) {
+        lSocket = localSocket;
+    }
+
     public void connect() throws IOException {
         lSocket.connect(serverAddress);
     }
